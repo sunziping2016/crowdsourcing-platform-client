@@ -9,7 +9,7 @@ const webpackConfig = require('./webpack.dev.conf');
 
 const port = process.env.PORT || 59033;
 const proxyOption = {
-  target: 'http://localhost:49342',
+  target: 'http://localhost:41682',
   ws: true,
   changeOrigin: true
 };
