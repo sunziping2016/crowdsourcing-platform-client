@@ -29,6 +29,14 @@ const actions = {
     const response = await throwOnError(axios().get('/api/user/' + id, {headers}));
     commit('updateUser', response);
     return response;
+  },
+  async sendMail(_, data) {
+    return throwOnError(axios().post('/api/email/', data));
+  },
+  async confirmMail(_, data) {
+    const id = data.id;
+    delete data.id;
+    return throwOnError(axios().post('/api/email/' + id, data));
   }
 };
 

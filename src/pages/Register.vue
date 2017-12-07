@@ -55,34 +55,95 @@
 </template>
 
 <script>
-export default {
-  name: 'register',
-  data() {
-    return {
-      email: '',
-      emailError: null,
-      username: '',
-      usernameError: null,
-      password: '',
-      passwordError: null,
-      retypePassword: '',
-      retypePasswordError: null,
-      verifying: false
+  const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  const usernameRegex = /^[a-z_0-9]+$/i;
+
+  export default {
+    name: 'register',
+    data() {
+      return {
+        email: '',
+        emailError: null,
+        username: '',
+        usernameError: null,
+        password: '',
+        passwordError: null,
+        retypePassword: '',
+        retypePasswordError: null,
+        verifying: false
+      }
+    },
+    watch: {
+      email() {
+        if (this.email.length === 0)
+          this.emailError = '邮箱不能为空';
+        if (!emailRegex.test(this.email))
+          this.emailError = '非法的邮箱';
+        else
+          this.emailError = null;
+      },
+      username() {
+        if (this.username.length === 0)
+          this.usernameError = '用户名不能为空';
+        if (!usernameRegex.test(this.username))
+          this.usernameError = '用户名只能有英文、数字和下线符组成';
+        else
+          this.usernameError = null;
+      },
+      password() {
+        if (this.password.length === 0)
+          this.passwordError = '密码不能为空';
+        else if (this.password.length < 8)
+          this.passwordError = '密码长度至少8位';
+        else
+          this.passwordError = null;
+      },
+      retypePassword() {
+        if (this.retypePassword !== this.password)
+          this.retypePasswordError = '密码不一致';
+        else
+          this.retypePasswordError = null;
+      }
+    },
+    computed: {
+      formValid() {
+        return !this.verifying && this.username && this.password && this.retypePassword
+          && !this.usernameError && !this.passwordError && !this.retypePasswordError;
+      }
+    },
+    methods: {
+      onRegister() {
+        if (!this.formValid)
+          return;
+        this.verifying = true;
+        this.$store.dispatch('user/sendMail', {
+          action: 'create-user',
+          email: this.email,
+          to: '/account',
+          username: this.username,
+          password: this.password,
+          roles: ['SUBSCRIBER']
+        }).then(() => {
+          this.$store.commit('appshell/addSnackbarMessage', '验证邮件已发送！');
+          this.$router.back();
+        }).catch(err => {
+          switch (err.message) {
+            case 'Username has been taken':
+              this.usernameError = '用户名已被注册';
+              break;
+            case 'Email has been taken':
+              this.emailError = '邮箱已被注册';
+              break;
+            default:
+              console.error(err);
+              this.$store.commit('appshell/addSnackbarMessage', err.message);
+          }
+        }).then(() => {
+          this.verifying = false;
+        });
+      }
     }
-  },
-  computed: {
-    formValid() {
-      return !this.verifying && this.username && this.password &&
-        !this.usernameError && !this.passwordError;
-    }
-  },
-  methods: {
-    onRegister() {
-      if (!this.formValid)
-        return;
-    }
-  }
-};
+  };
 </script>
 
 <style lang="stylus" scoped>

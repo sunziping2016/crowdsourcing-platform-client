@@ -19,7 +19,10 @@ const mutations = {
 
 const actions = {
   async auth({commit}, data) {
-    const response = await throwOnError(axios().post('/api/auth/', data));
+    const response = await throwOnError(axios().post('/api/auth/', data)).catch(err => {
+      commit('updateToken');
+      throw err;
+    });
     commit('updateToken', response);
     return response;
   },

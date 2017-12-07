@@ -93,11 +93,11 @@
           data.strategy = 'email';
           data.payload.email = this.username;
         }
-        this.$store.dispatch('auth/authAndGetUser', data).then(result => {
+        this.$store.dispatch('auth/authAndGetUser', data).then(() => {
           this.$store.commit('appshell/addSnackbarMessage', '登录成功！');
           this.$router.back();
-        }).catch(error => {
-          switch (error.message) {
+        }).catch(err => {
+          switch (err.message) {
             case 'User does not exist':
               this.usernameError = '用户不存在';
               break;
@@ -105,8 +105,8 @@
               this.passwordError = '密码错误';
               break;
             default:
-              console.error(error);
-              this.$store.commit('appshell/addSnackbarMessage', error.message);
+              console.error(err);
+              this.$store.commit('appshell/addSnackbarMessage', err.message);
           }
         }).then(() => {
           this.verifying = false;
