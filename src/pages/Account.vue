@@ -108,7 +108,7 @@
         return this.$store.getters['auth/user']
       },
       avatar() {
-        return this.$store.getters['auth/avatarThumbnail'];
+        return this.$store.getters['auth/avatar'];
       }
     }
   };

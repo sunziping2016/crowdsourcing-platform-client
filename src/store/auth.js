@@ -39,6 +39,11 @@ const getters = {
       return rootState.user.users[state.token.uid];
     return null;
   },
+  avatar(state, getters) {
+    if (getters.user)
+      return getters.user.avatar;
+    return null;
+  },
   avatarThumbnail(state, getters) {
     if (getters.user)
       return getters.user.avatarThumbnail64;

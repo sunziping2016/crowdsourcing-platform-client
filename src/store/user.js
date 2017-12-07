@@ -25,8 +25,30 @@ const actions = {
   async get({commit}, id) {
     const headers = {};
     const jwt = window.localStorage.getItem('jwt');
-    headers.Authorization = 'Bearer ' + jwt;
+    if (jwt)
+      headers.Authorization = 'Bearer ' + jwt;
     const response = await throwOnError(axios().get('/api/user/' + id, {headers}));
+    commit('updateUser', response);
+    return response;
+  },
+  async patch({commit}, data) {
+    const config = {
+      params: {populate: true},
+      headers: {}
+    };
+    const jwt = window.localStorage.getItem('jwt');
+    const id = data.id, onUploadProgress = data.onUploadProgress;
+    delete data.id;
+    delete data.onUploadProgress;
+    if (jwt)
+      config.headers.Authorization = 'Bearer ' + jwt;
+    if (data.avatar) {
+      config.headers['Content-Type'] = 'multipart/form-data';
+      data = objectToFormData(data);
+    }
+    if (onUploadProgress)
+      config.onUploadProgress = onUploadProgress;
+    const response = await throwOnError(axios().patch('/api/user/' + id, data, config));
     commit('updateUser', response);
     return response;
   },

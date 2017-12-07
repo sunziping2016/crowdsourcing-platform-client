@@ -6,6 +6,6 @@ targets="../../crowdsourcing-platform-server/public szp15.cn:/srv/http/crowdsour
 pushd "$current_dir"
 for target in $targets; do
   rsync --delete -avh "../dist/" --exclude="service-worker.js" --exclude="admin" $target
-  rsync --avh "../dist/service-worker.js" $target
+  rsync -avh "../dist/service-worker.js" $target
 done
 popd

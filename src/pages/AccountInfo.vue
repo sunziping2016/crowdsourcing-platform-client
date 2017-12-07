@@ -5,14 +5,23 @@
               xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3>
         <v-card class="account-info-card">
           <v-list>
-            <v-list-tile class="account-info-avatar" exact>
+            <v-list-tile class="account-info-avatar" @click="onClickAvatar">
               <v-list-tile-content>
                 <v-list-tile-title>头像</v-list-tile-title>
               </v-list-tile-content>
-              <v-avatar size="64px">
-                <img v-if="avatar" :src="avatar" alt="avatar">
-                <icon v-else name="user-circle" scale="4"></icon>
+              <v-list-tile-avatar v-if="uploading">
+                <v-progress-circular :size="64" indeterminate>
+                </v-progress-circular>
+              </v-list-tile-avatar>
+              <v-list-tile-action v-else-if="!avatar" class="blue--text text--darken-2">
+                <v-list-tile-title>未设置</v-list-tile-title>
+              </v-list-tile-action>
+              <v-avatar size="64px" v-else>
+                <img :src="avatar" alt="avatar">
               </v-avatar>
+              <input ref="avatar-input" type="file"
+                     accept="image/png,image/gif,image/jpeg"
+                     @change="onUpdateAvatar">
             </v-list-tile>
           </v-list>
         </v-card>
@@ -71,7 +80,7 @@
         return this.$store.getters['auth/user']
       },
       avatar() {
-        return this.$store.getters['auth/avatarThumbnail'];
+        return this.$store.getters['auth/avatar'];
       }
     },
     methods: {
@@ -79,6 +88,34 @@
         this.$store.commit('auth/updateToken');
         this.$store.commit('appshell/addSnackbarMessage', '退出登录!');
         this.$router.back();
+      },
+      onClickAvatar() {
+        if (this.uploading)
+          return;
+        this.$refs['avatar-input'].click();
+      },
+      onUpdateAvatar() {
+        const file = this.$refs['avatar-input'].files[0];
+        if (!file)
+          return;
+        if (['image/gif', 'image/jpeg', 'image/png'].indexOf(file.type) === -1) {
+          this.$store.commit('appshell/addSnackbarMessage', '未知的图片格式!');
+          return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          this.$store.commit('appshell/addSnackbarMessage', '图片大小必须小于5M!');
+          return;
+        }
+        this.uploading = true;
+        this.$store.dispatch('user/patch', {
+          id: this.user._id,
+          avatar: file
+        }).catch(err => {
+          console.error(err);
+          this.$store.commit('appshell/addSnackbarMessage', err.message);
+        }).then(() => {
+          setTimeout(() => this.uploading = false, 2000);
+        });
       }
     }
   };
@@ -99,4 +136,10 @@
 
   .logout-btn
     margin 16px
+</style>
+
+
+<style lang="stylus" scoped>
+  input[type=file]
+    display none
 </style>
