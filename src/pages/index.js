@@ -6,8 +6,10 @@ const Account = () => import('./Account.vue');
 const Login = () => import('./Login.vue');
 const Register = () => import('./Register.vue');
 const AccountInfo = () => import('./AccountInfo.vue');
-const NotFound = () => import('./NotFound.vue');
+const ResetPassword = () => import('./ResetPassword');
 const More = () => import('./More.vue');
+const ForgetPassword = () => import('./ForgetPassword');
+const NotFound = () => import('./NotFound.vue');
 
 Vue.use(Router);
 
@@ -62,6 +64,15 @@ const router = new Router({
       }
     },
     {
+      path: '/account/password',
+      name: 'resetPassword',
+      component: ResetPassword,
+      meta: {
+        title: '设置密码',
+        level: 2
+      }
+    },
+    {
       path: '/more',
       name: 'more',
       component: More,
@@ -69,6 +80,15 @@ const router = new Router({
         title: '更多',
         level: 0,
         tabIndex: 2
+      }
+    },
+    {
+      path: '/more/forget-password',
+      name: 'forgetPassword',
+      component: ForgetPassword,
+      meta: {
+        title: '忘记密码',
+        level: 1
       }
     },
     {

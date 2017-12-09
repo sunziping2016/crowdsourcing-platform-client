@@ -1,7 +1,7 @@
 <template>
   <v-container class="xs-pa-0">
     <v-layout row>
-      <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3>
+      <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3 class="xs-fullscreen-withnav">
         <v-card class="more-card">
           <v-list>
             <v-list-tile>
@@ -13,7 +13,7 @@
               </v-list-tile-action>
             </v-list-tile>
             <v-divider></v-divider>
-            <v-list-tile>
+            <v-list-tile exact to="/more/forget-password">
               <v-list-tile-content>
                 <v-list-tile-title>忘记密码</v-list-tile-title>
               </v-list-tile-content>
@@ -66,7 +66,7 @@
 
 <style lang="stylus">
   .more-card
-    margin-top 16px
+    margin 16px 0
     .list
       padding 0
 </style>

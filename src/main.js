@@ -71,6 +71,9 @@ let app = new Vue({
         });
         break;
       }
+      case 'reset-password':
+        // Do nothing
+        break;
       default: {
         const jwt = localStorage.getItem('jwt');
         if (jwt)

@@ -1,7 +1,7 @@
 <template>
   <v-container class="xs-pa-0">
     <v-layout row>
-      <v-flex v-if="user"
+      <v-flex v-if="user" class="xs-fullscreen"
               xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3>
         <v-card class="account-info-card">
           <v-list>
@@ -9,10 +9,10 @@
               <v-list-tile-content>
                 <v-list-tile-title>头像</v-list-tile-title>
               </v-list-tile-content>
-              <v-list-tile-avatar v-if="uploading">
-                <v-progress-circular :size="64" indeterminate>
+              <div class="avatar-uploading" v-if="uploading">
+                <v-progress-circular indeterminate>
                 </v-progress-circular>
-              </v-list-tile-avatar>
+              </div>
               <v-list-tile-action v-else-if="!avatar" class="blue--text text--darken-2">
                 <v-list-tile-title>未设置</v-list-tile-title>
               </v-list-tile-action>
@@ -45,7 +45,7 @@
               </v-list-tile-action>
             </v-list-tile>
             <v-divider></v-divider>
-            <v-list-tile>
+            <v-list-tile exact to="/account/password">
               <v-list-tile-content>
                 <v-list-tile-title>修改密码</v-list-tile-title>
               </v-list-tile-content>
@@ -59,6 +59,12 @@
           <v-btn class="logout-btn" color="error" large block
                  @click.native="onLogout"
           >退出登录</v-btn>
+        </v-layout>
+      </v-flex>
+      <v-flex v-else class="pa-2">
+        <v-layout justify-space-around>
+          <v-progress-circular indeterminate>
+          </v-progress-circular>
         </v-layout>
       </v-flex>
     </v-layout>
@@ -113,9 +119,7 @@
         }).catch(err => {
           console.error(err);
           this.$store.commit('appshell/addSnackbarMessage', err.message);
-        }).then(() => {
-          setTimeout(() => this.uploading = false, 2000);
-        });
+        }).then(() => this.uploading = false);
       }
     }
   };
@@ -123,7 +127,7 @@
 
 <style lang="stylus">
   .account-info-card
-    margin-top 16px
+    margin 16px 0
     .list
       padding 0
 
@@ -142,4 +146,10 @@
 <style lang="stylus" scoped>
   input[type=file]
     display none
+
+  .avatar-uploading
+    justify-content center
+    width 64px
+    display inline-flex
+    margin-right 16px
 </style>

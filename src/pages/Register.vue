@@ -22,23 +22,17 @@
             ></v-text-field>
             <v-text-field
               label="密码"
-              type="password"
               v-model="password"
               @keyup.native.enter="onRegister"
+              :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
+              :append-icon-cb="togglePasswordVisible"
+              :type="passwordVisible ? 'text' : 'password'"
               :error-messages="passwordError ? [passwordError] : []"
               required
             ></v-text-field>
-            <v-text-field
-              label="请再次输入密码"
-              type="password"
-              v-model="retypePassword"
-              @keyup.native.enter="onRegister"
-              :error-messages="retypePasswordError ? [retypePasswordError] : []"
-              required
-            ></v-text-field>
-            <p>我们没有条款好给你阅读并同意</p>
+            <p>我们将向您的邮箱发送验证邮件，确认后创建您的账户。</p>
             <v-layout justify-center>
-              <v-btn class="login-btn" color="primary" large block
+              <v-btn color="primary" large block
                      :disabled="!formValid"
                      :loading="verifying"
                      @click.native="onRegister"
@@ -68,8 +62,7 @@
         usernameError: null,
         password: '',
         passwordError: null,
-        retypePassword: '',
-        retypePasswordError: null,
+        passwordVisible: false,
         verifying: false
       }
     },
@@ -77,7 +70,7 @@
       email() {
         if (this.email.length === 0)
           this.emailError = '邮箱不能为空';
-        if (!emailRegex.test(this.email))
+        else if (!emailRegex.test(this.email))
           this.emailError = '非法的邮箱';
         else
           this.emailError = null;
@@ -85,7 +78,7 @@
       username() {
         if (this.username.length === 0)
           this.usernameError = '用户名不能为空';
-        if (!usernameRegex.test(this.username))
+        else if (!usernameRegex.test(this.username))
           this.usernameError = '用户名只能有英文、数字和下线符组成';
         else
           this.usernameError = null;
@@ -97,18 +90,12 @@
           this.passwordError = '密码长度至少8位';
         else
           this.passwordError = null;
-      },
-      retypePassword() {
-        if (this.retypePassword !== this.password)
-          this.retypePasswordError = '密码不一致';
-        else
-          this.retypePasswordError = null;
       }
     },
     computed: {
       formValid() {
-        return !this.verifying && this.username && this.password && this.retypePassword
-          && !this.usernameError && !this.passwordError && !this.retypePasswordError;
+        return !this.verifying && this.username && this.password
+          && !this.usernameError && !this.passwordError;
       }
     },
     methods: {
@@ -141,6 +128,9 @@
         }).then(() => {
           this.verifying = false;
         });
+      },
+      togglePasswordVisible() {
+        this.passwordVisible = !this.passwordVisible;
       }
     }
   };

@@ -1,7 +1,7 @@
 <template>
   <v-container class="xs-pa-0">
     <v-layout row>
-      <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3>
+      <v-flex xs12 sm10 offset-sm1 md8 offset-md2 lg6 offset-lg3 class="xs-fullscreen-withnav">
         <v-card class="account-card">
           <v-list>
             <v-list-tile class="account-avatar" exact
@@ -116,7 +116,7 @@
 
 <style lang="stylus">
   .account-card
-    margin-top 16px
+    margin 16px 0
     .list
       padding 0
 

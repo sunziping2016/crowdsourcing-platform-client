@@ -23,7 +23,7 @@
               required
             ></v-text-field>
             <v-layout justify-center>
-              <v-btn class="login-btn" color="primary" large block
+              <v-btn color="primary" large block
                      :disabled="!formValid"
                      :loading="verifying"
                      @click.native="onLogin"
@@ -64,10 +64,10 @@
       username() {
         if (this.username.length === 0)
           this.usernameError = '用户名不能为空';
-        if (!usernameRegex.test(this.username))
+        else if (!usernameRegex.test(this.username))
           this.usernameError = '非法的用户名或邮箱';
         else
-          this.usernameError = null;
+          this.usernameError =  null;
       },
       password() {
         if (this.password.length === 0)
