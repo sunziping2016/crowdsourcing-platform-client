@@ -26,7 +26,7 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <v-flex v-else class="pa-2">
+      <v-flex class="pa-2" v-else>
         <v-layout justify-space-around>
           <v-progress-circular indeterminate>
           </v-progress-circular>

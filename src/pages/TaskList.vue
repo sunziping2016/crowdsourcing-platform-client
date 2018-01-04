@@ -65,7 +65,7 @@
   const fetchLimit = 5;
 
   export default {
-    name: 'tasks',
+    name: 'taskList',
     data() {
       return {
         tasks: [],

@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 const Tasks = () => import('./Tasks.vue');
+const Task = () => import('./Task.vue');
+const Assignment = () => import('./Assignment.vue');
+const Assignments = () => import('./Assignments.vue');
 const Account = () => import('./Account.vue');
 const Login = () => import('./Login.vue');
 const Register = () => import('./Register.vue');
@@ -24,6 +27,33 @@ const router = new Router({
         title: '任务',
         level: 0,
         tabIndex: 0
+      }
+    },
+    {
+      path: '/task/:id',
+      name: 'task',
+      component: Task,
+      meta: {
+        title: '任务详情',
+        level: 1
+      }
+    },
+    {
+      path: '/assignment/:id',
+      name: 'assignment',
+      component: Assignment,
+      meta: {
+        title: '作业详情',
+        level: 2
+      }
+    },
+    {
+      path: '/assignments',
+      name: 'assignments',
+      component: Assignments,
+      meta: {
+        title: '作业列表',
+        level: 1
       }
     },
     {

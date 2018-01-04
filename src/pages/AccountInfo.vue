@@ -61,7 +61,7 @@
           >退出登录</v-btn>
         </v-layout>
       </v-flex>
-      <v-flex v-else class="pa-2">
+      <v-flex class="pa-2" v-else>
         <v-layout justify-space-around>
           <v-progress-circular indeterminate>
           </v-progress-circular>
@@ -72,8 +72,6 @@
 </template>
 
 <script>
-  import 'vue-awesome/icons/user-circle';
-
   export default {
     name: 'accountInfo',
     data() {

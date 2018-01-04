@@ -26,20 +26,20 @@
         </v-card>
         <v-card class="account-card">
           <v-list>
-            <v-list-tile>
+            <v-list-tile exact to="/assignments">
               <v-list-tile-content>
-                <v-list-tile-title>我的任务</v-list-tile-title>
+                <v-list-tile-title>我的作业</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
                 <span>
-                  <small>查看全部任务</small>
+                  <small>查看全部作业</small>
                   <v-icon>keyboard_arrow_right</v-icon>
                 </span>
               </v-list-tile-action>
             </v-list-tile>
             <v-divider></v-divider>
             <v-list-tile class="account-categorized-tasks">
-              <v-btn flat
+              <v-btn flat exact :to="item.url"
                      v-for="item in categorizedTasks"
                      :key="item.name"
               >
@@ -68,15 +68,6 @@
                 <v-icon>keyboard_arrow_right</v-icon>
               </v-list-tile-action>
             </v-list-tile>
-            <v-divider></v-divider>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>我的分享</v-list-tile-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-icon>keyboard_arrow_right</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
           </v-list>
         </v-card>
       </v-flex>
@@ -96,10 +87,10 @@
     data() {
       return {
         categorizedTasks: [
-          {name: '待完成', icon: 'hourglass-o'},
-          {name: '待审核', icon: 'spinner'},
-          {name: '已通过', icon: 'check-circle-o'},
-          {name: '未通过', icon: 'exclamation-triangle'}
+          {name: '待完成', icon: 'hourglass-o', url: '/assignments?status=EDITING'},
+          {name: '待审核', icon: 'spinner', url: '/assignments?status=SUBMITTED'},
+          {name: '已通过', icon: 'check-circle-o', url: '/assignments?status=ADMITTED'},
+          {name: '未通过', icon: 'exclamation-triangle', url: '/assignments?status=REJECTED'}
         ]
       };
     },
@@ -140,6 +131,7 @@
     padding 8px
     .list__tile
       height 100%
+      padding 0
     .btn
       background transparent !important
       border-radius 0

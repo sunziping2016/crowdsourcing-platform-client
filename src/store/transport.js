@@ -81,6 +81,13 @@ export function removeSioHandler(event, handler) {
 
 export function objectToFormData(object) {
   const data = new FormData();
-  Object.keys(object).forEach(key => data.append(key, object[key]));
+  Object.keys(object).forEach(key => {
+    if (typeof object[key] !== 'object' || object[key] instanceof File)
+      data.append(key, object[key]);
+    else if (typeof object[key].toJSON === 'function')
+      data.append(key, object[key].toJSON());
+    else
+      data.append(key, JSON.stringify(object[key]));
+  });
   return data;
 }
