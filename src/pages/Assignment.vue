@@ -73,6 +73,8 @@
           this.$store.dispatch('assignment/getData', this.$route.params.id)
         ).then(response =>
           this.assignmentData = response
+        ).then(() =>
+          this.$store.dispatch('assignment/get', this.$route.params.id)
         ).catch(err => {
           console.error(err);
           this.$store.commit('appshell/addSnackbarMessage', err.message);
